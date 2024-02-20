@@ -4,7 +4,6 @@ import { OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "./filters/HttpExceptions.filter";
 import { AppModule } from "./app.module";
 import { connectMicroservices } from "./connectMicroservices";
-import csurf from "csurf";
 import {
   swaggerPath,
   swaggerDocumentOptions,
@@ -45,8 +44,6 @@ async function main() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter));
-
-  app.use(csurf());
   void app.listen(PORT);
 
   return app;
