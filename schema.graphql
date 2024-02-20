@@ -1,0 +1,450 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  createdAt: DateTime!
+  id: String!
+  text: String
+  updatedAt: DateTime!
+  user: User
+}
+
+input CommentCreateInput {
+  text: String
+  user: UserWhereUniqueInput
+}
+
+input CommentCreateNestedManyWithoutUsersInput {
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentListRelationFilter {
+  every: CommentWhereInput
+  none: CommentWhereInput
+  some: CommentWhereInput
+}
+
+input CommentOrderByInput {
+  createdAt: SortOrder
+  id: SortOrder
+  text: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input CommentUpdateInput {
+  text: String
+  user: UserWhereUniqueInput
+}
+
+input CommentUpdateManyWithoutUsersInput {
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+}
+
+input CommentWhereInput {
+  id: StringFilter
+  text: StringNullableFilter
+  user: UserWhereUniqueInput
+}
+
+input CommentWhereUniqueInput {
+  id: String!
+}
+
+input Credentials {
+  password: String!
+  phoneNumber: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input FloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: Float
+  notIn: [Float!]
+}
+
+type Image {
+  createdAt: DateTime!
+  id: String!
+  tour: Tour
+  updatedAt: DateTime!
+  url: String!
+  users(orderBy: [UserOrderByInput!], skip: Float, take: Float, where: UserWhereInput): [User!]!
+}
+
+input ImageCreateInput {
+  tour: TourWhereUniqueInput
+  url: String!
+  users: UserCreateNestedManyWithoutImagesInput
+}
+
+input ImageCreateNestedManyWithoutToursInput {
+  connect: [ImageWhereUniqueInput!]
+}
+
+input ImageListRelationFilter {
+  every: ImageWhereInput
+  none: ImageWhereInput
+  some: ImageWhereInput
+}
+
+input ImageOrderByInput {
+  createdAt: SortOrder
+  id: SortOrder
+  tourId: SortOrder
+  updatedAt: SortOrder
+  url: SortOrder
+}
+
+input ImageUpdateInput {
+  tour: TourWhereUniqueInput
+  url: String
+  users: UserUpdateManyWithoutImagesInput
+}
+
+input ImageUpdateManyWithoutToursInput {
+  connect: [ImageWhereUniqueInput!]
+  disconnect: [ImageWhereUniqueInput!]
+  set: [ImageWhereUniqueInput!]
+}
+
+input ImageWhereInput {
+  id: StringFilter
+  tour: TourWhereUniqueInput
+  url: StringFilter
+  users: UserListRelationFilter
+}
+
+input ImageWhereUniqueInput {
+  id: String!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type MetaQueryPayload {
+  count: Float!
+}
+
+type Mutation {
+  createComment(data: CommentCreateInput!): Comment!
+  createImage(data: ImageCreateInput!): Image!
+  createRating(data: RatingCreateInput!): Rating!
+  createTour(data: TourCreateInput!): Tour!
+  createUser(data: UserCreateInput!): User!
+  deleteComment(where: CommentWhereUniqueInput!): Comment!
+  deleteImage(where: ImageWhereUniqueInput!): Image!
+  deleteRating(where: RatingWhereUniqueInput!): Rating!
+  deleteTour(where: TourWhereUniqueInput!): Tour!
+  deleteUser(where: UserWhereUniqueInput!): User!
+  login(credentials: Credentials!): UserInfo!
+  register(data: UserCreateInputArg!): UserCreated!
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment!
+  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image!
+  updateRating(data: RatingUpdateInput!, where: RatingWhereUniqueInput!): Rating!
+  updateTour(data: TourUpdateInput!, where: TourWhereUniqueInput!): Tour!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+}
+
+type Query {
+  _commentsMeta(where: CommentWhereInput): MetaQueryPayload!
+  _imagesMeta(where: ImageWhereInput): MetaQueryPayload!
+  _ratingsMeta(where: RatingWhereInput): MetaQueryPayload!
+  _toursMeta(where: TourWhereInput): MetaQueryPayload!
+  _usersMeta(where: UserWhereInput): MetaQueryPayload!
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(orderBy: [CommentOrderByInput!], skip: Float, take: Float, where: CommentWhereInput): [Comment!]!
+  image(where: ImageWhereUniqueInput!): Image
+  images(orderBy: [ImageOrderByInput!], skip: Float, take: Float, where: ImageWhereInput): [Image!]!
+  rating(where: RatingWhereUniqueInput!): Rating
+  ratings(orderBy: [RatingOrderByInput!], skip: Float, take: Float, where: RatingWhereInput): [Rating!]!
+  tour(where: TourWhereUniqueInput!): Tour
+  tours(orderBy: [TourOrderByInput!], skip: Float, take: Float, where: TourWhereInput): [Tour!]!
+  user(where: UserWhereUniqueInput!): User
+  userInfo: UserInfo!
+  users(orderBy: [UserOrderByInput!], skip: Float, take: Float, where: UserWhereInput): [User!]!
+}
+
+enum QueryMode {
+  Default
+  Insensitive
+}
+
+type Rating {
+  createdAt: DateTime!
+  id: String!
+  updatedAt: DateTime!
+  user: User
+  value: Float!
+}
+
+input RatingCreateInput {
+  user: UserWhereUniqueInput
+  value: Float!
+}
+
+input RatingCreateNestedManyWithoutUsersInput {
+  connect: [RatingWhereUniqueInput!]
+}
+
+input RatingListRelationFilter {
+  every: RatingWhereInput
+  none: RatingWhereInput
+  some: RatingWhereInput
+}
+
+input RatingOrderByInput {
+  createdAt: SortOrder
+  id: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+  value: SortOrder
+}
+
+input RatingUpdateInput {
+  user: UserWhereUniqueInput
+  value: Float
+}
+
+input RatingUpdateManyWithoutUsersInput {
+  connect: [RatingWhereUniqueInput!]
+  disconnect: [RatingWhereUniqueInput!]
+  set: [RatingWhereUniqueInput!]
+}
+
+input RatingWhereInput {
+  id: StringFilter
+  user: UserWhereUniqueInput
+  value: FloatFilter
+}
+
+input RatingWhereUniqueInput {
+  id: String!
+}
+
+enum SortOrder {
+  Asc
+  Desc
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: String
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: String
+  notIn: [String!]
+  startsWith: String
+}
+
+type Tour {
+  createdAt: DateTime!
+  description: String
+  id: String!
+  images(orderBy: [ImageOrderByInput!], skip: Float, take: Float, where: ImageWhereInput): [Image!]!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  updatedAt: DateTime!
+  user: User
+}
+
+input TourCreateInput {
+  description: String
+  images: ImageCreateNestedManyWithoutToursInput
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  user: UserWhereUniqueInput
+}
+
+input TourCreateNestedManyWithoutUsersInput {
+  connect: [TourWhereUniqueInput!]
+}
+
+input TourListRelationFilter {
+  every: TourWhereInput
+  none: TourWhereInput
+  some: TourWhereInput
+}
+
+input TourOrderByInput {
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  latitude: SortOrder
+  longitude: SortOrder
+  name: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input TourUpdateInput {
+  description: String
+  images: ImageUpdateManyWithoutToursInput
+  latitude: Float
+  longitude: Float
+  name: String
+  user: UserWhereUniqueInput
+}
+
+input TourUpdateManyWithoutUsersInput {
+  connect: [TourWhereUniqueInput!]
+  disconnect: [TourWhereUniqueInput!]
+  set: [TourWhereUniqueInput!]
+}
+
+input TourWhereInput {
+  description: StringNullableFilter
+  id: StringFilter
+  images: ImageListRelationFilter
+  latitude: FloatFilter
+  longitude: FloatFilter
+  name: StringFilter
+  user: UserWhereUniqueInput
+}
+
+input TourWhereUniqueInput {
+  id: String!
+}
+
+type User {
+  comments(orderBy: [CommentOrderByInput!], skip: Float, take: Float, where: CommentWhereInput): [Comment!]!
+  createdAt: DateTime!
+  firstName: String
+  id: String!
+  image: Image
+  lastName: String
+  phoneNumber: String!
+  ratings(orderBy: [RatingOrderByInput!], skip: Float, take: Float, where: RatingWhereInput): [Rating!]!
+  roles: JSON!
+  tours(orderBy: [TourOrderByInput!], skip: Float, take: Float, where: TourWhereInput): [Tour!]!
+  updatedAt: DateTime!
+}
+
+input UserCreateInput {
+  comments: CommentCreateNestedManyWithoutUsersInput
+  firstName: String
+  image: ImageWhereUniqueInput
+  lastName: String
+  password: String!
+  phoneNumber: String!
+  ratings: RatingCreateNestedManyWithoutUsersInput
+  roles: JSON!
+  tours: TourCreateNestedManyWithoutUsersInput
+  username: String!
+}
+
+input UserCreateInputArg {
+  firstName: String
+  lastName: String
+  password: String!
+  phoneNumber: String!
+}
+
+input UserCreateNestedManyWithoutImagesInput {
+  connect: [UserWhereUniqueInput!]
+}
+
+type UserCreated {
+  id: String!
+  message: String!
+  phoneNumber: String!
+}
+
+type UserInfo {
+  accessToken: String
+  firstName: String!
+  id: String!
+  lastName: String!
+  phoneNumber: String!
+  roles: [String!]!
+}
+
+input UserListRelationFilter {
+  every: UserWhereInput
+  none: UserWhereInput
+  some: UserWhereInput
+}
+
+input UserOrderByInput {
+  createdAt: SortOrder
+  firstName: SortOrder
+  id: SortOrder
+  imageId: SortOrder
+  lastName: SortOrder
+  password: SortOrder
+  phoneNumber: SortOrder
+  roles: SortOrder
+  updatedAt: SortOrder
+  username: SortOrder
+}
+
+input UserUpdateInput {
+  comments: CommentUpdateManyWithoutUsersInput
+  firstName: String
+  image: ImageWhereUniqueInput
+  lastName: String
+  password: String
+  phoneNumber: String
+  ratings: RatingUpdateManyWithoutUsersInput
+  roles: JSON
+  tours: TourUpdateManyWithoutUsersInput
+  username: String
+}
+
+input UserUpdateManyWithoutImagesInput {
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+}
+
+input UserWhereInput {
+  comments: CommentListRelationFilter
+  firstName: StringNullableFilter
+  id: StringFilter
+  image: ImageWhereUniqueInput
+  lastName: StringNullableFilter
+  phoneNumber: StringFilter
+  ratings: RatingListRelationFilter
+  tours: TourListRelationFilter
+  username: StringFilter
+}
+
+input UserWhereUniqueInput {
+  id: String!
+}
