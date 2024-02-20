@@ -3,9 +3,6 @@ import { IsOptional, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { Credentials } from "./Credentials";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsJSONValue } from "src/validators";
-import GraphQLJSON from "graphql-type-json";
-import { InputJsonValue } from "src/types";
 
 @ArgsType()
 export class LoginArgs {
