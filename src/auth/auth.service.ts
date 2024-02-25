@@ -4,7 +4,6 @@ import { PasswordService } from "./password.service";
 import { TokenService } from "./token.service";
 import { UserCreated, UserInfo } from "./UserInfo";
 import { UserService } from "../user/user.service";
-import { Prisma } from "@prisma/client";
 import { RegisterArgs } from "./LoginArgs";
 
 @Injectable()
@@ -116,15 +115,17 @@ export class AuthService {
   }
 
   async createUserAuth(createUserArgs: RegisterArgs): Promise<UserCreated> {
-    try {
-      const dto = { data: {...createUserArgs.data, roles: ['user']} };
-      const user = await this.userService.createUser(dto);
-      const { id, roles } = user;
-      const roleList = roles as string[];
-      roleList.push('user');
-      return { id, phoneNumber: user.phoneNumber, message: "User created"};
-    } catch (error) {
-      throw error;
+    const dto = { data: {...createUserArgs.data, roles: ['user']} };
+    if(await this.userService.user({where: {phoneNumber: createUserArgs.data.phoneNumber}})){
+      throw new HttpException(
+        'User with this phone number already exists',
+        HttpStatus.BAD_REQUEST,
+      );
     }
+    const user = await this.userService.createUser(dto);
+    const { id, roles } = user;
+    const roleList = roles as string[];
+    roleList.push('user');
+    return { id, phoneNumber: user.phoneNumber, message: "User created"};
   }
 }

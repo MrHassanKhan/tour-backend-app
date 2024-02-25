@@ -13,10 +13,10 @@ import { PrismaService } from "../../prisma/prisma.service";
 
 import {
   Prisma,
-  User, // @ts-ignore
-  Comment, // @ts-ignore
-  Rating, // @ts-ignore
-  Tour, // @ts-ignore
+  User, 
+  Comment, 
+  Rating,
+  Tour,
   Image,
 } from "@prisma/client";
 

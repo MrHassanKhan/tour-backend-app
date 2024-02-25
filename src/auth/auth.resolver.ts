@@ -6,7 +6,6 @@ import { GqlDefaultAuthGuard } from "./gqlDefaultAuth.guard";
 import { UserData } from "./userData.decorator";
 import { LoginArgs, RegisterArgs } from "./LoginArgs";
 import { UserCreated, UserInfo } from "./UserInfo";
-import { Prisma } from "@prisma/client";
 
 @Resolver(UserInfo)
 export class AuthResolver {
