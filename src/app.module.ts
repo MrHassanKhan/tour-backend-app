@@ -43,6 +43,21 @@ import { AuthModule } from "./auth/auth.module";
           sortSchema: true,
           playground,
           introspection: playground || introspection,
+          formatError: (error) => {
+            const originalError = error.extensions
+              ?.originalError as Error | undefined;
+           
+            if (!originalError) {
+              return {
+                message: error.message,
+                code: error.extensions?.code,
+              };
+            }
+            return {
+              message: originalError.message,
+              code: error.extensions?.code,
+            };
+          },
         };
       },
       inject: [ConfigService],
