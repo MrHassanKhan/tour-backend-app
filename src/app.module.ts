@@ -51,11 +51,13 @@ import { AuthModule } from "./auth/auth.module";
               return {
                 message: error.message,
                 code: error.extensions?.code,
+                status: error.extensions?.status,
               };
             }
             return {
               message: originalError.message,
               code: error.extensions?.code,
+              status: error.extensions?.status,
             };
           },
         };
