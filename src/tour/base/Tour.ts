@@ -21,6 +21,7 @@ import {
 import { Type } from "class-transformer";
 import { Image } from "../../image/base/Image";
 import { User } from "../../user/base/User";
+import { Comment } from "../../comment/base/Comment";
 
 @ObjectType()
 class Tour {
@@ -59,6 +60,15 @@ class Tour {
   @Type(() => Image)
   @IsOptional()
   images?: Array<Image>;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Comment],
+  })
+  @ValidateNested()
+  @Type(() => Comment)
+  @IsOptional()
+  comments?: Array<Comment>;
 
   @ApiProperty({
     required: true,

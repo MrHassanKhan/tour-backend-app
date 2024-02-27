@@ -8,10 +8,12 @@ type Comment {
   text: String
   updatedAt: DateTime!
   user: User
+  tour: Tour
 }
 
 input CommentCreateInput {
   text: String
+  tour: TourWhereUniqueInput
   user: UserWhereUniqueInput
 }
 
@@ -47,6 +49,7 @@ input CommentUpdateManyWithoutUsersInput {
 input CommentWhereInput {
   id: StringFilter
   text: StringNullableFilter
+  tour: TourWhereUniqueInput
   user: UserWhereUniqueInput
 }
 
@@ -267,6 +270,7 @@ type Tour {
   name: String!
   updatedAt: DateTime!
   user: User
+  comments: [Comment!]!
 }
 
 input TourCreateInput {

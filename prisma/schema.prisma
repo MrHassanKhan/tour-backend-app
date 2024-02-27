@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DB_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model User {
@@ -13,18 +13,17 @@ model User {
   lastName        String?
   password        String
   phoneNumber     String    @unique
-  isPhoneVerified Boolean   @default(false)
-  twoFA           Boolean   @default(false)
   roles           Json
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-
-  image           Image?    @relation(fields: [imageId], references: [id])
   imageId         String?
-  tours           Tour[]
+  isPhoneVerified Boolean   @default(false)
+  twoFA           Boolean   @default(false)
   comments        Comment[]
+  otp             Otp[]
   ratings         Rating[]
-  otp             Otp[] 
+  tours           Tour[]
+  image           Image?    @relation(fields: [imageId], references: [id])
 }
 
 model Otp {
@@ -34,16 +33,8 @@ model Otp {
   updatedAt DateTime @updatedAt
   expiresAt DateTime @db.Timestamp(5)
   useCase   UserCase
-
-  user      User?    @relation(fields: [userId], references: [id])
   userId    String?
-}
-
-enum UserCase {
-  LOGIN // to login user and sent OTP to phone who have 2FA enabled
-  D2FA // to disable 2FA
-  E2FA // to enable 2FA
-  VPHONE // to verify phone number
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Image {
@@ -51,19 +42,18 @@ model Image {
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  users     User[]
-  tour      Tour?    @relation(fields: [tourId], references: [id])
   tourId    String?
+  tour      Tour?    @relation(fields: [tourId], references: [id])
+  users     User[]
 }
 
 model Rating {
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
   userId    String?
   value     Float
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Comment {
@@ -71,23 +61,29 @@ model Comment {
   id        String   @id @default(cuid())
   text      String?
   updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
   userId    String?
-  tour      Tour?    @relation(fields: [tourId], references: [id])
   tourId    String?
+  tour      Tour?    @relation(fields: [tourId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Tour {
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
   description String?
-  id          String   @id @default(cuid())
-  images      Image[]
+  id          String    @id @default(cuid())
   latitude    Float
   longitude   Float
   name        String
-  updatedAt   DateTime @updatedAt
-  
-  user        User?    @relation(fields: [userId], references: [id])
+  updatedAt   DateTime  @updatedAt
   userId      String?
   comments    Comment[]
+  images      Image[]
+  user        User?     @relation(fields: [userId], references: [id])
+}
+
+enum UserCase {
+  LOGIN
+  D2FA
+  E2FA
+  VPHONE
 }

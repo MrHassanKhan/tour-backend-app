@@ -95,12 +95,12 @@ export class CommentResolverBase {
       ...args,
       data: {
         ...args.data,
-
         user: args.data.user
           ? {
               connect: args.data.user,
             }
           : undefined,
+        tour: args.data.tour  ? { connect: args.data.tour } : undefined,
       },
     });
   }

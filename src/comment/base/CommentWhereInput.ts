@@ -16,6 +16,7 @@ import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { TourWhereUniqueInput } from "../../tour/base/TourWhereUniqueInput";
 
 @InputType()
 class CommentWhereInput {
@@ -52,6 +53,18 @@ class CommentWhereInput {
     nullable: true,
   })
   user?: UserWhereUniqueInput;
+
+   @ApiProperty({
+    required: false,
+    type: () => TourWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => TourWhereUniqueInput)
+  @IsOptional()
+  @Field(() => TourWhereUniqueInput, {
+    nullable: true,
+  })
+  tour?: TourWhereUniqueInput;
 }
 
 export { CommentWhereInput as CommentWhereInput };
