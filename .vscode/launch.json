@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        // attach to debugger listening on port 9229
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Process",
+            "port": 9229
+        }
+    ]
+}

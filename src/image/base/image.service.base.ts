@@ -9,18 +9,61 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
+import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../../prisma/prisma.service";
 
 import {
   Prisma,
-  Image, // @ts-ignore
-  User, // @ts-ignore
+  Image,
+  User,
   Tour,
 } from "@prisma/client";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { UploadImageResponse } from "./UploadImageResponse";
+import { ImageFolderType } from "./ImageType.enum";
 
 export class ImageServiceBase {
-  constructor(protected readonly prisma: PrismaService) {}
+  private readonly s3Client: S3Client;
+  constructor(protected readonly prisma: PrismaService, 
+    protected readonly configService: ConfigService) {
+      this.s3Client = new S3Client({ 
+        region: this.configService.getOrThrow('AWS_REGION'),
+        credentials: {
+          accessKeyId: this.configService.getOrThrow('AWS_ACCESS_KEY'),
+          secretAccessKey: this.configService.getOrThrow('AWS_SECRET'),
+        }
+      });
+  }
 
+  async uploadImage(file: Express.Multer.File, userId: string, type: ImageFolderType): Promise<UploadImageResponse> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const fileKeyName = `${userId}/${type}/${Date.now()}-${file.originalname}`;
+    await this.s3Client.send(new PutObjectCommand({
+      Bucket: this.configService.getOrThrow('AWS_BUCKET_NAME'),
+      Key: fileKeyName,
+      ACL: 'public-read',
+      Body: file.buffer,
+      ContentType: file.mimetype
+    }));
+    const imageUrl = `https://${this.configService.getOrThrow('AWS_BUCKET_NAME')}.s3.${this.configService.getOrThrow('AWS_REGION')}.amazonaws.com/${fileKeyName}`;
+    return await this.prisma.image.create({
+      data: {
+        url: imageUrl,
+      },
+      select: {
+        id: true,
+        url: true,
+      }
+    });
+  }
+
+  async uploadImages(files: Express.Multer.File[], userId: string, type: ImageFolderType): Promise<UploadImageResponse[]> {
+    const uploadedImages: UploadImageResponse[] = [];
+    for await (const file of files) {
+      uploadedImages.push(await this.uploadImage(file, userId, type));
+    }
+    return uploadedImages;
+  }
   async count<T extends Prisma.ImageCountArgs>(
     args: Prisma.SelectSubset<T, Prisma.ImageCountArgs>
   ): Promise<number> {

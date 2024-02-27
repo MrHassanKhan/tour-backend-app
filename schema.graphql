@@ -84,12 +84,6 @@ type Image {
   users(orderBy: [UserOrderByInput!], skip: Float, take: Float, where: UserWhereInput): [User!]!
 }
 
-input ImageCreateInput {
-  tour: TourWhereUniqueInput
-  url: String!
-  users: UserCreateNestedManyWithoutImagesInput
-}
-
 input ImageCreateNestedManyWithoutToursInput {
   connect: [ImageWhereUniqueInput!]
 }
@@ -106,12 +100,6 @@ input ImageOrderByInput {
   tourId: SortOrder
   updatedAt: SortOrder
   url: SortOrder
-}
-
-input ImageUpdateInput {
-  tour: TourWhereUniqueInput
-  url: String
-  users: UserUpdateManyWithoutImagesInput
 }
 
 input ImageUpdateManyWithoutToursInput {
@@ -142,7 +130,6 @@ type MetaQueryPayload {
 
 type Mutation {
   createComment(data: CommentCreateInput!): Comment!
-  createImage(data: ImageCreateInput!): Image!
   createRating(data: RatingCreateInput!): Rating!
   createTour(data: TourCreateInput!): Tour!
   createUser(data: UserCreateInput!): User!
@@ -154,7 +141,6 @@ type Mutation {
   login(credentials: Credentials!): UserInfo!
   register(data: UserCreateInputArg!): UserCreated!
   updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment!
-  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image!
   updateRating(data: RatingUpdateInput!, where: RatingWhereUniqueInput!): Rating!
   updateTour(data: TourUpdateInput!, where: TourWhereUniqueInput!): Tour!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
@@ -376,10 +362,6 @@ input UserCreateInputArg {
   phoneNumber: String!
 }
 
-input UserCreateNestedManyWithoutImagesInput {
-  connect: [UserWhereUniqueInput!]
-}
-
 type UserCreated {
   id: String!
   message: String!
@@ -425,12 +407,6 @@ input UserUpdateInput {
   roles: JSON
   tours: TourUpdateManyWithoutUsersInput
   username: String
-}
-
-input UserUpdateManyWithoutImagesInput {
-  connect: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
 }
 
 input UserWhereInput {

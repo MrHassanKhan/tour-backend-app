@@ -18,13 +18,10 @@ import * as gqlACGuard from "../../auth/gqlAC.guard";
 import { GqlDefaultAuthGuard } from "../../auth/gqlDefaultAuth.guard";
 import * as common from "@nestjs/common";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { Image } from "./Image";
 import { ImageCountArgs } from "./ImageCountArgs";
 import { ImageFindManyArgs } from "./ImageFindManyArgs";
 import { ImageFindUniqueArgs } from "./ImageFindUniqueArgs";
-import { CreateImageArgs } from "./CreateImageArgs";
-import { UpdateImageArgs } from "./UpdateImageArgs";
 import { DeleteImageArgs } from "./DeleteImageArgs";
 import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
 import { User } from "../../user/base/User";
@@ -81,60 +78,60 @@ export class ImageResolverBase {
     return result;
   }
 
-  @common.UseInterceptors(AclValidateRequestInterceptor)
-  @graphql.Mutation(() => Image)
-  @nestAccessControl.UseRoles({
-    resource: "Image",
-    action: "create",
-    possession: "any",
-  })
-  async createImage(@graphql.Args() args: CreateImageArgs): Promise<Image> {
-    return await this.service.createImage({
-      ...args,
-      data: {
-        ...args.data,
+  // @common.UseInterceptors(AclValidateRequestInterceptor)
+  // @graphql.Mutation(() => Image)
+  // @nestAccessControl.UseRoles({
+  //   resource: "Image",
+  //   action: "create",
+  //   possession: "any",
+  // })
+  // async createImage(@graphql.Args() args: CreateImageArgs): Promise<Image> {
+  //   return await this.service.createImage({
+  //     ...args,
+  //     data: {
+  //       ...args.data,
 
-        tour: args.data.tour
-          ? {
-              connect: args.data.tour,
-            }
-          : undefined,
-      },
-    });
-  }
+  //       tour: args.data.tour
+  //         ? {
+  //             connect: args.data.tour,
+  //           }
+  //         : undefined,
+  //     },
+  //   });
+  // }
 
-  @common.UseInterceptors(AclValidateRequestInterceptor)
-  @graphql.Mutation(() => Image)
-  @nestAccessControl.UseRoles({
-    resource: "Image",
-    action: "update",
-    possession: "any",
-  })
-  async updateImage(
-    @graphql.Args() args: UpdateImageArgs
-  ): Promise<Image | null> {
-    try {
-      return await this.service.updateImage({
-        ...args,
-        data: {
-          ...args.data,
+  // @common.UseInterceptors(AclValidateRequestInterceptor)
+  // @graphql.Mutation(() => Image)
+  // @nestAccessControl.UseRoles({
+  //   resource: "Image",
+  //   action: "update",
+  //   possession: "any",
+  // })
+  // async updateImage(
+  //   @graphql.Args() args: UpdateImageArgs
+  // ): Promise<Image | null> {
+  //   try {
+  //     return await this.service.updateImage({
+  //       ...args,
+  //       data: {
+  //         ...args.data,
 
-          tour: args.data.tour
-            ? {
-                connect: args.data.tour,
-              }
-            : undefined,
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new GraphQLError(
-          `No resource was found for ${JSON.stringify(args.where)}`
-        );
-      }
-      throw error;
-    }
-  }
+  //         tour: args.data.tour
+  //           ? {
+  //               connect: args.data.tour,
+  //             }
+  //           : undefined,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     if (isRecordNotFoundError(error)) {
+  //       throw new GraphQLError(
+  //         `No resource was found for ${JSON.stringify(args.where)}`
+  //       );
+  //     }
+  //     throw error;
+  //   }
+  // }
 
   @graphql.Mutation(() => Image)
   @nestAccessControl.UseRoles({

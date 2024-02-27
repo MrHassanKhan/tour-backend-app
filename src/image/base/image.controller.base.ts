@@ -21,7 +21,6 @@ import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { ImageService } from "../image.service";
 import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { ImageCreateInput } from "./ImageCreateInput";
 import { Image } from "./Image";
 import { ImageFindManyArgs } from "./ImageFindManyArgs";
 import { ImageWhereUniqueInput } from "./ImageWhereUniqueInput";
@@ -29,6 +28,10 @@ import { ImageUpdateInput } from "./ImageUpdateInput";
 import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
 import { User } from "../../user/base/User";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { UploadImageResponse } from "./UploadImageResponse";
+import { AuthUser } from "src/decorators/public.decorator";
+import { ImageFolderType } from "./ImageType.enum";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -37,43 +40,120 @@ export class ImageControllerBase {
     protected readonly service: ImageService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
+
+
   @common.UseInterceptors(AclValidateRequestInterceptor)
-  @common.Post()
-  @swagger.ApiCreatedResponse({ type: Image })
+  @common.Post('/upload-image')
+  @swagger.ApiConsumes('multipart/form-data')
+  @swagger.ApiQuery({
+    name: 'type',
+    required: false,
+    enum: ImageFolderType,
+  })
+  @swagger.ApiBody({
+    required: true,
+    schema: {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary",
+        }
+      }
+    }
+  })
+  @swagger.ApiOperation({ summary: 'Upload Single image' })
   @nestAccessControl.UseRoles({
     resource: "Image",
     action: "create",
     possession: "any",
   })
+  @swagger.ApiCreatedResponse({ type: UploadImageResponse })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async createImage(@common.Body() data: ImageCreateInput): Promise<Image> {
-    return await this.service.createImage({
-      data: {
-        ...data,
-
-        tour: data.tour
-          ? {
-              connect: data.tour,
-            }
-          : undefined,
-      },
-      select: {
-        createdAt: true,
-        id: true,
-
-        tour: {
-          select: {
-            id: true,
-          },
-        },
-
-        updatedAt: true,
-        url: true,
-      },
-    });
+  @common.UseInterceptors(FileInterceptor('file'))
+  async uploadImage(@common.UploadedFile() file: Express.Multer.File, @common.Query('type') type: ImageFolderType, @AuthUser() user:User,): Promise<UploadImageResponse> {
+    return await this.service.uploadImage(file, user.id, type);
   }
+
+  @common.UseInterceptors(AclValidateRequestInterceptor)
+  @common.Post('/upload-images')
+  @swagger.ApiConsumes('multipart/form-data')
+  @swagger.ApiQuery({ 
+    name: 'type',
+    required: false,
+    enum: ImageFolderType,
+  })
+  @swagger.ApiBody({
+    required: true,
+    schema: {
+      type: "object",
+      properties: {
+        files: {
+          type: "array",
+          items: {
+            type: "string",
+            format: "binary"
+          }
+        }
+      }
+    }
+  })
+  @swagger.ApiOperation({ summary: 'Upload Multiple images' })
+  @nestAccessControl.UseRoles({
+    resource: "Image",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiCreatedResponse({ type: [UploadImageResponse] })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  @common.UseInterceptors(FileInterceptor('files', { limits: { files: 4 } }))
+  async uploadImages(@common.UploadedFiles() files: Express.Multer.File[], 
+  @AuthUser() user:User, @common.Query('type') type: ImageFolderType): Promise<UploadImageResponse[]> {
+    return await this.service.uploadImages(files, user.id, type);
+  }
+
+
+  // @common.UseInterceptors(AclValidateRequestInterceptor)
+  // @common.Post()
+  // @swagger.ApiCreatedResponse({ type: Image })
+  // @nestAccessControl.UseRoles({
+  //   resource: "Image",
+  //   action: "create",
+  //   possession: "any",
+  // })
+  // @swagger.ApiForbiddenResponse({
+  //   type: errors.ForbiddenException,
+  // })
+  // async createImage(@common.Body() data: ImageCreateInput): Promise<Image> {
+  //   return await this.service.createImage({
+  //     data: {
+  //       ...data,
+
+  //       tour: data.tour
+  //         ? {
+  //             connect: data.tour,
+  //           }
+  //         : undefined,
+  //     },
+  //     select: {
+  //       createdAt: true,
+  //       id: true,
+
+  //       tour: {
+  //         select: {
+  //           id: true,
+  //         },
+  //       },
+
+  //       updatedAt: true,
+  //       url: true,
+  //     },
+  //   });
+  // }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
