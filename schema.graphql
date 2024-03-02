@@ -8,7 +8,6 @@ type Comment {
   text: String
   updatedAt: DateTime!
   user: User
-  tour: Tour
 }
 
 input CommentCreateInput {
@@ -182,6 +181,7 @@ type Rating {
 }
 
 input RatingCreateInput {
+  tour: TourWhereUniqueInput
   user: UserWhereUniqueInput
   value: Float!
 }
@@ -205,6 +205,7 @@ input RatingOrderByInput {
 }
 
 input RatingUpdateInput {
+  tour: TourWhereUniqueInput
   user: UserWhereUniqueInput
   value: Float
 }
@@ -270,7 +271,6 @@ type Tour {
   name: String!
   updatedAt: DateTime!
   user: User
-  comments: [Comment!]!
 }
 
 input TourCreateInput {

@@ -54,6 +54,8 @@ model Rating {
   userId    String?
   value     Float
   user      User?    @relation(fields: [userId], references: [id])
+  tourId    String?
+  tour      Tour?    @relation(fields: [tourId], references: [id])
 }
 
 model Comment {
@@ -78,6 +80,7 @@ model Tour {
   userId      String?
   comments    Comment[]
   images      Image[]
+  ratings     Rating[]
   user        User?     @relation(fields: [userId], references: [id])
 }
 

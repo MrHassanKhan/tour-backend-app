@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 import { ValidateNested, IsOptional, IsNumber } from "class-validator";
 import { Type } from "class-transformer";
+import { TourWhereUniqueInput } from "src/tour/base/TourWhereUniqueInput";
 
 @InputType()
 class RatingUpdateInput {
@@ -28,6 +29,18 @@ class RatingUpdateInput {
     nullable: true,
   })
   user?: UserWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => TourWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => TourWhereUniqueInput)
+  @IsOptional()
+  @Field(() => TourWhereUniqueInput, {
+    nullable: true,
+  })
+  tour?: TourWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

@@ -55,6 +55,7 @@ export class RatingControllerBase {
               connect: data.user,
             }
           : undefined,
+        tour: data.tour? { connect: data.tour } : undefined,
       },
       select: {
         createdAt: true,
@@ -66,7 +67,11 @@ export class RatingControllerBase {
             id: true,
           },
         },
-
+        tour: {
+          select: {
+            id: true,
+          },
+        },
         value: true,
       },
     });
@@ -94,6 +99,11 @@ export class RatingControllerBase {
         updatedAt: true,
 
         user: {
+          select: {
+            id: true,
+          },
+        },
+        tour: {
           select: {
             id: true,
           },
@@ -127,6 +137,11 @@ export class RatingControllerBase {
         updatedAt: true,
 
         user: {
+          select: {
+            id: true,
+          },
+        },
+        tour: {
           select: {
             id: true,
           },
@@ -170,6 +185,7 @@ export class RatingControllerBase {
                 connect: data.user,
               }
             : undefined,
+          tour: data.tour ? { connect: data.tour } : undefined,
         },
         select: {
           createdAt: true,
@@ -177,6 +193,11 @@ export class RatingControllerBase {
           updatedAt: true,
 
           user: {
+            select: {
+              id: true,
+            },
+          },
+          tour: {
             select: {
               id: true,
             },

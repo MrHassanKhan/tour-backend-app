@@ -97,6 +97,7 @@ export class RatingResolverBase {
               connect: args.data.user,
             }
           : undefined,
+        tour: args.data.tour ? { connect: args.data.tour } : undefined,
       },
     });
   }
@@ -122,6 +123,7 @@ export class RatingResolverBase {
                 connect: args.data.user,
               }
             : undefined,
+          tour: args.data.tour ? { connect: args.data.tour } : undefined,
         },
       });
     } catch (error) {

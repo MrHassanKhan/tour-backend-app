@@ -20,6 +20,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { User } from "../../user/base/User";
+import { Tour } from "../../tour/base/Tour";
 
 @ObjectType()
 class Rating {
@@ -55,6 +56,15 @@ class Rating {
   @Type(() => User)
   @IsOptional()
   user?: User | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => Tour,
+  })
+  @ValidateNested()
+  @Type(() => Tour)
+  @IsOptional()
+  tour?: Tour | null;
 
   @ApiProperty({
     required: true,
