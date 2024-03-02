@@ -17,7 +17,7 @@ import {
   ValidateNested,
   IsNumber,
 } from "class-validator";
-import { ImageCreateNestedManyWithoutToursInput } from "./ImageCreateNestedManyWithoutToursInput";
+import { ImageCreateNestedManyWithoutToursInput, RatingCreateNestedManyWithoutToursInput } from "./ImageCreateNestedManyWithoutToursInput";
 import { Type } from "class-transformer";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
@@ -45,6 +45,18 @@ class TourCreateInput {
     nullable: true,
   })
   images?: ImageCreateNestedManyWithoutToursInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => RatingCreateNestedManyWithoutToursInput,
+  })
+  @ValidateNested()
+  @Type(() => RatingCreateNestedManyWithoutToursInput)
+  @IsOptional()
+  @Field(() => RatingCreateNestedManyWithoutToursInput, {
+    nullable: true,
+  })
+  ratings?: RatingCreateNestedManyWithoutToursInput;
 
   @ApiProperty({
     required: true,

@@ -87,6 +87,16 @@ export class RatingResolverBase {
     possession: "any",
   })
   async createRating(@graphql.Args() args: CreateRatingArgs): Promise<Rating> {
+    const rating = await this.service.ratings({
+      where: {
+        user: args.data.user,
+        tour: args.data.tour,
+      },
+    });
+
+    if (rating.length > 0) {
+      throw new GraphQLError("You have already rated this tour");
+    }
     return await this.service.createRating({
       ...args,
       data: {

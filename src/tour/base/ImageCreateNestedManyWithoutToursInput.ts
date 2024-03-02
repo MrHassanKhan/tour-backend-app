@@ -12,6 +12,7 @@ https://docs.amplication.com/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ImageWhereUniqueInput } from "../../image/base/ImageWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
+import { RatingWhereUniqueInput } from "src/rating/base/RatingWhereUniqueInput";
 
 @InputType()
 class ImageCreateNestedManyWithoutToursInput {
@@ -24,5 +25,19 @@ class ImageCreateNestedManyWithoutToursInput {
   })
   connect?: Array<ImageWhereUniqueInput>;
 }
+@InputType()
+class RatingCreateNestedManyWithoutToursInput {
+  @Field(() => [RatingWhereUniqueInput], {
+    nullable: true,
+  })
+  @ApiProperty({
+    required: false,
+    type: () => [RatingWhereUniqueInput],
+  })
+  connect?: Array<RatingWhereUniqueInput>;
+}
 
-export { ImageCreateNestedManyWithoutToursInput as ImageCreateNestedManyWithoutToursInput };
+export { 
+  ImageCreateNestedManyWithoutToursInput as ImageCreateNestedManyWithoutToursInput,
+  RatingCreateNestedManyWithoutToursInput as RatingCreateNestedManyWithoutToursInput
+ };

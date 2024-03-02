@@ -102,6 +102,7 @@ export class CommentResolverBase {
           : undefined,
         tour: args.data.tour  ? { connect: args.data.tour } : undefined,
       },
+      include: { user: true, tour: true },
     });
   }
 

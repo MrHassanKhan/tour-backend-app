@@ -22,6 +22,7 @@ import { Type } from "class-transformer";
 import { Image } from "../../image/base/Image";
 import { User } from "../../user/base/User";
 import { Comment } from "../../comment/base/Comment";
+import { Rating } from "../../rating/base/Rating";
 
 @ObjectType()
 class Tour {
@@ -67,8 +68,19 @@ class Tour {
   })
   @ValidateNested()
   @Type(() => Comment)
+  @Field(() => [Comment], { nullable: true })
   @IsOptional()
   comments?: Array<Comment>;
+  
+  @ApiProperty({
+    required: false,
+    type: () => [Rating],
+  })
+  @ValidateNested()
+  @Type(() => Rating)
+  @Field(() => [Rating], { nullable: true })
+  @IsOptional()
+  ratings?: Array<Rating>;
 
   @ApiProperty({
     required: true,

@@ -53,9 +53,9 @@ model Rating {
   updatedAt DateTime @updatedAt
   userId    String?
   value     Float
-  user      User?    @relation(fields: [userId], references: [id])
   tourId    String?
   tour      Tour?    @relation(fields: [tourId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Comment {

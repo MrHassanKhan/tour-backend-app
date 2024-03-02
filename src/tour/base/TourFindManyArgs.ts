@@ -57,6 +57,10 @@ class TourFindManyArgs {
   @Field(() => Number, { nullable: true })
   @Type(() => Number)
   take?: number;
+
+  // @IsOptional()
+  // @Field({ nullable: true })
+  // select?: Prisma.TourSelect<any>;
 }
 
 export { TourFindManyArgs as TourFindManyArgs };

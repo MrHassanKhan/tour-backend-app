@@ -68,6 +68,7 @@ class Comment {
   })
   @ValidateNested()
   @Type(() => Tour)
+  @Field(() => Tour, { nullable: true })
   @IsOptional()
   tour?: Tour | null;
 }
