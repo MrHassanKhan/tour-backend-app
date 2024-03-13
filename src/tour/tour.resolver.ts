@@ -15,6 +15,7 @@ export class TourResolver extends TourResolverBase {
     @nestAccessControl.InjectRolesBuilder()
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {
+    // this super method , calling the parent class constructor
     super(service, rolesBuilder);
   }
 }

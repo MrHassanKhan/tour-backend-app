@@ -64,6 +64,8 @@ export class TourResolverBase {
     return this.service.tours(args);
   }
 
+
+  //removed the @common decorators
   // @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.Query(() => Tour, { nullable: true })
   // @nestAccessControl.UseRoles({
