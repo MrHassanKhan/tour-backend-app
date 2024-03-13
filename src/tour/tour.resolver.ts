@@ -7,7 +7,7 @@ import { TourResolverBase } from "./base/tour.resolver.base";
 import { Tour } from "./base/Tour";
 import { TourService } from "./tour.service";
 
-@common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
+// @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Tour)
 export class TourResolver extends TourResolverBase {
   constructor(

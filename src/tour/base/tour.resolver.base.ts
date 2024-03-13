@@ -30,7 +30,7 @@ import { ImageFindManyArgs } from "../../image/base/ImageFindManyArgs";
 import { Image } from "../../image/base/Image";
 import { User } from "../../user/base/User";
 import { TourService } from "../tour.service";
-@common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
+// @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Tour)
 export class TourResolverBase {
   constructor(
@@ -39,11 +39,11 @@ export class TourResolverBase {
   ) {}
 
   @graphql.Query(() => MetaQueryPayload)
-  @nestAccessControl.UseRoles({
-    resource: "Tour",
-    action: "read",
-    possession: "any",
-  })
+  // @nestAccessControl.UseRoles({
+  //   resource: "Tour",
+  //   action: "read",
+  //   possession: "any",
+  // })
   async _toursMeta(
     @graphql.Args() args: TourCountArgs
   ): Promise<MetaQueryPayload> {
@@ -53,24 +53,24 @@ export class TourResolverBase {
     };
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  // @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.Query(() => [Tour])
-  @nestAccessControl.UseRoles({
-    resource: "Tour",
-    action: "read",
-    possession: "any",
-  })
+  // @nestAccessControl.UseRoles({
+  //   resource: "Tour",
+  //   action: "read",
+  //   possession: "any",
+  // })
   async tours(@graphql.Args() args: TourFindManyArgs): Promise<Tour[]> {
     return this.service.tours(args);
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  // @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.Query(() => Tour, { nullable: true })
-  @nestAccessControl.UseRoles({
-    resource: "Tour",
-    action: "read",
-    possession: "own",
-  })
+  // @nestAccessControl.UseRoles({
+  //   resource: "Tour",
+  //   action: "read",
+  //   possession: "own",
+  // })
   async tour(@graphql.Args() args: TourFindUniqueArgs): Promise<Tour | null> {
     const result = await this.service.tour(args);
     if (result === null) {
@@ -79,6 +79,7 @@ export class TourResolverBase {
     return result;
   }
 
+  @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
   @common.UseInterceptors(AclValidateRequestInterceptor)
   @graphql.Mutation(() => Tour)
   @nestAccessControl.UseRoles({
@@ -101,6 +102,7 @@ export class TourResolverBase {
     });
   }
 
+  @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
   @common.UseInterceptors(AclValidateRequestInterceptor)
   @graphql.Mutation(() => Tour)
   @nestAccessControl.UseRoles({
@@ -132,6 +134,7 @@ export class TourResolverBase {
     }
   }
 
+  @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
   @graphql.Mutation(() => Tour)
   @nestAccessControl.UseRoles({
     resource: "Tour",
